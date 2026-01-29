@@ -43,7 +43,6 @@ public class Journal
         // Get user's choice
         int choice = int.Parse(Console.ReadLine());
 
-
         // Switch-case for handling the user's choice
         switch (choice)
         {
@@ -51,22 +50,26 @@ public class Journal
             case 1:
                 _journal.Add(GeneratePrompt());
                 break;
+            
             // 2. Display
             case 2:
                 DisplayJournal();
                 break;
+            
             // 3. Load file
             case 3:
                 Console.WriteLine("What is the file name? (don't include file ending)");
                 string filepath = Console.ReadLine();
                 _journal = LoadFile(filepath);
                 break;
+            
             // 4. Save
             case 4:
                 Console.WriteLine("What is the file name? (saved as a csv)");
                 string filename = Console.ReadLine();
                 SaveFile(filename);
                 break;
+            
             // 5 (or any other number). Exit
             default:
                 _done = true;
