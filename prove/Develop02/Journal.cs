@@ -201,16 +201,16 @@ public class Journal
                     newEntry = newEntry.Insert(indexes[i], "\"");
                 }
 
-                line = line + "\"" + newEntry + "\",";
+                line = line + "\"" + newEntry + "\"";
             }
             // See if entry contains a comma but not quotation marks and handle appropriately
             else if (entry._entry.Contains(','))
             {
-                line = line + "\"" + entry._entry + "\",";
+                line = line + "\"" + entry._entry + "\"";
             }
             else
             {
-                line = line + entry._entry + ",";
+                line += entry._entry;
             }
 
             // Write line to csv
