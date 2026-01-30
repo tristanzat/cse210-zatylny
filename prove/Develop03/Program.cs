@@ -14,13 +14,16 @@ class Program
         //Main memorization loop
         while(!done)
         {
+            // Clear console for readability
+            Console.Clear();
+
             // Don't start hiding words until the second pass
             if (!firstPass) { scripture.HideWords(); }
             else { firstPass = false; }
 
             // Display scripture and get user's input
             scripture.Display();
-            Console.WriteLine("\n\nPress enter to continue or type 'quit' to finish: ");
+            Console.WriteLine("\n\nPress enter to continue or type 'quit' to finish:");
             string choice = Console.ReadLine();
 
             // Stop the program when user either types quit or the scripture is fully hidden
