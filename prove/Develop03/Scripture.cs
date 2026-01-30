@@ -31,6 +31,20 @@ public class Scripture
     }
 
     /// <summary>
+    /// Create a new instance of the Scripture class given book, chapter, verse, and a List of Words.
+    /// </summary>
+    /// <param name="b">Book of scripture</param>
+    /// <param name="c">Chapter of verse</param>
+    /// <param name="v">Verse of scripture</param>
+    /// <param name="words">List containing Word instances</param>
+    public Scripture(string b, int c, int v, List<Word> words)
+    {
+        _reference = new(b, c, v);
+        _scripture = words;
+        _hiddenWords = [];
+    }
+
+    /// <summary>
     /// Create a new instance of the Scripture class given book, chapter, verse, and List of strings for the words.
     /// </summary>
     /// <param name="b">Book of scripture</param>
