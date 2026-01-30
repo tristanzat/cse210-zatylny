@@ -1,11 +1,18 @@
-using System;
+/* How this program exceeds requirements:
+   The scripture to memorize is chosen at random
+   from a library of every scripture found in the
+   standard works. This is done by parsing a csv.
+*/
 
 class Program
 {
     static void Main(string[] args)
     {
+        // Initialize scripture library
+        ScriptureLibrary scriptureLibrary = new();
+
         // Make a new scripture
-        Scripture scripture = new("Moses", 1, 39, ["For", "behold,", "this", "is", "my", "work", "and", "my", "glory—","to","bring","to","pass","the","immortality","and","eternal","life","of","man."]);
+        Scripture scripture = scriptureLibrary.GetRandomScripture();
         
         // Variables for looping and ensuring correct display
         bool done = false;
