@@ -1,13 +1,28 @@
-using System.Data;
-using System.Runtime.InteropServices;
-
+/// <summary>
+/// Represents a scripture to memorize, containing a reference and the words of the scirpture
+/// </summary>
 public class Scripture
 {
-    // Variables
-    private Reference _reference;
-    private List<Word> _scripture;
-    private List<int> _hiddenWords;
+    // Instantiate local variables
+    private readonly Reference _reference;
+    private readonly List<Word> _scripture;
+    private readonly List<int> _hiddenWords;
 
+    /// <summary>
+    /// Creates a new instance of the Scripture class referencing John 11:35.
+    /// </summary>
+    public Scripture()
+    {
+        _reference = new("John", 11, 35);
+        _scripture = [new Word("Jesus"), new Word("wept.")];
+        _hiddenWords = [];
+    }
+
+    /// <summary>
+    /// Create a new instance of the Scripture class with a Reference and a List of Words.
+    /// </summary>
+    /// <param name="r">Reference class containing scripture reference</param>
+    /// <param name="words">List containing Word instances</param>
     public Scripture(Reference r, List<Word> words)
     {
         _reference = r;
@@ -15,6 +30,13 @@ public class Scripture
         _hiddenWords = [];
     }
 
+    /// <summary>
+    /// Create a new instance of the Scripture class given book, chapter, verse, and List of strings for the words.
+    /// </summary>
+    /// <param name="b">Book of scripture</param>
+    /// <param name="c">Chapter of verse</param>
+    /// <param name="v">Verse of scripture</param>
+    /// <param name="strings">Words of scripture as a List</param>
     public Scripture(string b, int c, int v, List<string> strings)
     {
         _reference = new(b, c, v);
@@ -29,6 +51,13 @@ public class Scripture
         _hiddenWords = [];
     }
 
+    /// <summary>
+    /// Create a new instance of the Scripture class given book, chapter, verses, and List of strings for the words.
+    /// </summary>
+    /// <param name="b">Book of scripture</param>
+    /// <param name="c">Chapter of verse</param>
+    /// <param name="ints">Verses of scripture as a List</param>
+    /// <param name="strings">Words of scripture as a List</param>
     public Scripture(string b, int c, List<int> ints, List<string> strings)
     {
         _reference = new(b, c, ints);
@@ -43,6 +72,9 @@ public class Scripture
         _hiddenWords = [];
     }
 
+    /// <summary>
+    /// Displays the scripture in the format {reference} {words}.
+    /// </summary>
     public void Display()
     {
         _reference.Display();
@@ -54,40 +86,54 @@ public class Scripture
         }
     }
 
+    /// <summary>
+    /// Hides a random number of words of the scripture based on verse length.
+    /// </summary>
     public void HideWords()
     {
+        // Variables to use in loop
         Random random = new();
         int numWordsToHide = (_scripture.Count / 10) + 1;
-        bool continueFunction = true;
 
+        // Loop for hiding words
         for (int i = 0; i < numWordsToHide; i++)
         {
-            if (continueFunction)
+            // Check to see if the scripture is already fully hidden. If so, end the for loop
+            if (FullyHidden())
             {
-                int j = 0;
+                i = numWordsToHide;
+            }
+
+            // Scripture isn't fully hidden, hide words
+            else
+            {
+                // Get an index of a random word to hide
                 int hideIndex = random.Next(_scripture.Count);
+
+                // See if that word has already been hidden. If so, loop until word hasn't been hidden
                 bool continueLoop = _hiddenWords.Contains(hideIndex);
                 while (continueLoop)
                 {
                     hideIndex = random.Next(_scripture.Count);
                     continueLoop = _hiddenWords.Contains(hideIndex);
-                    j++;
-                    if (j > 100)
-                    {
-                        continueLoop = false;
-                    }
                 }
 
+                // Hide word at chosen random index
                 _scripture[hideIndex].HideWord();
+
+                // Add index to list to ensure word can't be hidden more than once
                 _hiddenWords.Add(hideIndex);
-            }
-            
-            if (_scripture.Count == _hiddenWords.Count)
-            {
-                i = numWordsToHide;
-                continueFunction = false;
             }
         }
 
+    }
+
+    /// <summary>
+    /// Check if the scripture is fully hidden.
+    /// </summary>
+    /// <returns>Boolean containing whether or not the scirpture is fully hidden</returns>
+    public bool FullyHidden()
+    {
+        return _hiddenWords.Count == _scripture.Count;
     }
 }

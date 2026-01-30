@@ -1,21 +1,30 @@
 using System;
-using System.Xml.Serialization;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Scripture scripture = new("Moses", 1, 39, ["For", "behold", "this", "is", "my", "work", "and", "my", "glory—","to","bring","to","pass","the","immortality","and","eternal","life","of","man."]);
+        // Make a new scripture
+        Scripture scripture = new("Moses", 1, 39, ["For", "behold,", "this", "is", "my", "work", "and", "my", "glory—","to","bring","to","pass","the","immortality","and","eternal","life","of","man."]);
+        
+        // Variables for looping and ensuring correct display
         bool done = false;
+        bool firstPass = true;
+
+        //Main memorization loop
         while(!done)
         {
+            // Don't start hiding words until the second pass
+            if (!firstPass) { scripture.HideWords(); }
+            else { firstPass = false; }
+
+            // Display scripture and get user's input
             scripture.Display();
-            Console.Write("\n\nEnter or quit: ");
+            Console.WriteLine("\n\nPress enter to continue or type 'quit' to finish: ");
             string choice = Console.ReadLine();
 
-            scripture.HideWords();
-
-            if (choice.Equals("quit"))
+            // Stop the program when user either types quit or the scripture is fully hidden
+            if (choice.Equals("quit") || scripture.FullyHidden())
             {
                 done = true;
             }
