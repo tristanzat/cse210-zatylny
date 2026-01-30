@@ -138,16 +138,21 @@ public class Journal
         {
             try
             {
-                // Read all fields on the current line
-                string[] fields = parser.ReadFields();
-
-                // Skip header line (I don't know why it's 2)
-                if (!(parser.LineNumber == 2))
+                // Skip header line
+                if (!(parser.LineNumber == 1))
                 {
+                    // Read all fields on the current line
+                    string[] fields = parser.ReadFields();
+
                     // Process fields by making them an entry for the list
                     // [0] = date, [1] = prompt, [2] = entry
                     entry = new(fields[0], fields[1], fields[2]);
                     entries.Add(entry);
+                }
+                else
+                {
+                    // Move on to next line
+                    parser.ReadLine();
                 }
             }
             catch (MalformedLineException ex)
