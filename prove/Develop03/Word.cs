@@ -1,3 +1,6 @@
+/// <summary>
+/// Represents a word of a scripture, either shown or hidden.
+/// </summary>
 public class Word
 {
     // Local variables

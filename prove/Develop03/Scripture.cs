@@ -1,5 +1,5 @@
 /// <summary>
-/// Represents a scripture to memorize, containing a reference and the words of the scirpture
+/// Represents a scripture to memorize, containing a reference and the words of the scirpture.
 /// </summary>
 public class Scripture
 {
