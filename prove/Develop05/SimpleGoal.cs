@@ -71,6 +71,6 @@ public class SimpleGoal : Goal
     // String format for file saving
     public override string ToString()
     {
-        return $"SimpleGoal:{_name},{_desc},{_points},{_complete}";
+        return $"SimpleGoal:{_name}|{_desc}|{_points}|{_complete}";
     }
 }

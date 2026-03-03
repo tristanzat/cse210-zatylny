@@ -44,6 +44,6 @@ public class EternalGoal : Goal
     // String format for file saving
     public override string ToString()
     {
-        return $"EternalGoal:{_name},{_desc},{_points},{_timesMarked}";
+        return $"EternalGoal:{_name}|{_desc}|{_points}|{_timesMarked}";
     }
 }

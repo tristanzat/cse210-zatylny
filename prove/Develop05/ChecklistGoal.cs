@@ -71,6 +71,6 @@ public class ChecklistGoal : Goal
     // String format for file saving
     public override string ToString()
     {
-        return $"ChecklistGoal:{_name},{_desc},{_points},{_target},{_numCompleted}";
+        return $"ChecklistGoal:{_name}|{_desc}|{_points}|{_target}|{_numCompleted}";
     }
 }
