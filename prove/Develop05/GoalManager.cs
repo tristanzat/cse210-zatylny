@@ -65,9 +65,9 @@ public class GoalManager
                         Console.WriteLine("Which goal would you like to record progress toward?");
                         for (int i = 0; i < _goals.Count; i++)
                         {
-                            Console.Write($"{i+1}. {_goals[i].GetDetails()}");
+                            Console.Write($"{i+1}. {_goals[i].GetDetails()}\n");
                         }
-                        Console.Write("\n> ");
+                        Console.Write("> ");
 
                         int goalChoice = int.Parse(Console.ReadLine());
                         goalChoice --;
@@ -111,7 +111,7 @@ public class GoalManager
             if (!done)
             {
                 // wait for user to press enter before continuing
-                Console.WriteLine("Hit enter to continue...");
+                Console.Write("Hit enter to continue...");
                 Console.ReadLine();
 
                 Console.Clear();
@@ -282,9 +282,6 @@ public class GoalManager
         // write user info
         writer.WriteLine($"{_userName},{_level},{_score}");
 
-        // Write the header row
-        writer.WriteLine("date,prompt,entry");
-
         // Write goal data
         foreach (Goal goal in _goals)
         {
@@ -311,11 +308,14 @@ public class GoalManager
         {
             try
             {
+                // Current line
+                long lineNum = parser.LineNumber;
+
                 // Read all fields on the current line
                 string[] fields = parser.ReadFields();
 
                 // Header line is user information
-                if (parser.LineNumber == 1)
+                if (lineNum == 1)
                 {
                     _userName = fields[0];
                     _level = int.Parse(fields[1]);
@@ -325,9 +325,10 @@ public class GoalManager
                 // Goal information
                 else
                 {
+                    string[] firstItem = fields[0].Split(':');
                     // first item is type:name, so split it on :
-                    string goalType = fields[0].Split(':')[0];
-                    string name = fields[0].Split(':')[1];
+                    string goalType = firstItem[0];
+                    string name = firstItem[1];
                     
                     // second item is description, third is point value
                     string description = fields[1];
