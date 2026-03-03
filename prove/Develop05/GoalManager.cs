@@ -115,7 +115,7 @@ public class GoalManager
             if (!done)
             {
                 // wait for user to press enter before continuing
-                Console.Write("Hit enter to continue...");
+                Console.Write("Hit enter to continue... ");
                 Console.ReadLine();
 
                 Console.Clear();
@@ -126,7 +126,7 @@ public class GoalManager
     // player info
     public string GetPlayerInfo()
     {
-        return $"{_userName} | Level {_level} | Lifetime points: {_score} | Points to next level: {_scoreToLevel}";
+        return $"{_userName} | Level {_level} | Lifetime goals completed: {_goalsCompleted} | Lifetime points: {_score} | Points to next level: {_scoreToLevel}";
     }
 
     // handle levels
