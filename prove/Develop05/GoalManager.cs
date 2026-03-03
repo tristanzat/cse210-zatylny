@@ -142,7 +142,7 @@ public class GoalManager
         _level = (int)((1 + Math.Sqrt(1 + 8 * _score/1000)) / 2);
         
         // Cumulative score needed for next level
-        int scoreForNextLevel = (int)((1000 * Math.Pow(_level + 1, 2) - 1000 * _level + 1) / 2);
+        int scoreForNextLevel = (int)((1000 * Math.Pow(_level + 1, 2) - (1000 * (_level + 1))) / 2);
         _scoreToLevel = scoreForNextLevel - _score;
 
         // Display level up message
@@ -266,8 +266,15 @@ public class GoalManager
     // record event
     public void RecordEvent(Goal goal)
     {
-        goal.RecordEvent();
-        _score += goal.GetPoints();
+        if (!goal.IsComplete())
+        {
+            goal.RecordEvent();
+            _score += goal.GetPoints();
+        }
+        else
+        {
+            goal.RecordEvent();
+        }
     }
 
     // save to file
