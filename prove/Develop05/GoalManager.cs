@@ -115,7 +115,7 @@ public class GoalManager
             if (!done)
             {
                 // wait for user to press enter before continuing
-                Console.Write("Hit enter to continue... ");
+                Console.Write("\nHit enter to continue... ");
                 Console.ReadLine();
 
                 Console.Clear();
