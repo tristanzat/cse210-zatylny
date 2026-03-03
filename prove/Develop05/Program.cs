@@ -13,10 +13,12 @@ class Program
         Console.Write("Welcome to the goal game!\n" +
                 "\t1. Start a new game.\n" + 
                 "\t2. Load a previous game.\n" +
-                "\t3. Quit" +
+                "\t3. Quit\n" +
                 "> ");
         
         int choice = int.Parse(Console.ReadLine());
+
+        Console.Clear();
 
         switch (choice)
         {
@@ -24,6 +26,7 @@ class Program
             case 1:
                 Console.Write("What is your name? ");
                 goalManager.SetName(Console.ReadLine());
+                Console.Clear();
                 goalManager.Start();
                 break;
             
@@ -31,6 +34,7 @@ class Program
             case 2:
                 Console.Write("What is the file name (no ending)? ");
                 goalManager.LoadFile(Console.ReadLine());
+                Console.Clear();
                 goalManager.Start();
                 break;
             
