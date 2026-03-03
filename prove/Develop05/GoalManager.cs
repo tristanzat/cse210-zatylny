@@ -8,12 +8,14 @@ public class GoalManager
     private int _score;
     private int _scoreToLevel;
     private string _userName;
+    private int _goalsCompleted;
 
     // base constructor
     public GoalManager()
     {
         _goals = [];
         _score = 0;
+        _goalsCompleted = 0;
         CheckLevel(1);
         _userName = "";
     }
@@ -272,6 +274,11 @@ public class GoalManager
         {
             goal.RecordEvent();
             _score += goal.GetPoints();
+            
+            if (goal.IsComplete())
+            {
+                _goalsCompleted ++;
+            }
         }
         else
         {
@@ -289,7 +296,7 @@ public class GoalManager
         using StreamWriter writer = new(fileName, false);
         
         // write user info
-        writer.WriteLine($"{_userName},{_level},{_score}");
+        writer.WriteLine($"{_userName}|{_level}|{_score}|{_goalsCompleted}");
 
         // Write goal data
         foreach (Goal goal in _goals)
@@ -310,7 +317,7 @@ public class GoalManager
 
         // File is delimited
         parser.TextFieldType = FieldType.Delimited;
-        parser.SetDelimiters(","); // Delimiter is comma
+        parser.SetDelimiters("|"); // Delimiter is pipe
 
         // Loop through all the lines in the file
         while (!parser.EndOfData)
@@ -329,6 +336,7 @@ public class GoalManager
                     _userName = fields[0];
                     _level = int.Parse(fields[1]);
                     _score = int.Parse(fields[2]);
+                    _goalsCompleted = int.Parse(fields[3]);
                 }
 
                 // Goal information
