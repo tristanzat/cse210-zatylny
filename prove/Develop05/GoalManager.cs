@@ -26,7 +26,7 @@ public class GoalManager
     // menu loop
     public void Start()
     {
-        Console.Write($"Welcome, {_userName}!");
+        Console.Write($"Welcome, {_userName}! ");
 
         bool done = false;
         
@@ -84,7 +84,7 @@ public class GoalManager
                 
                 // create goal
                 case 4:
-                    CreateGoal();
+                    _goals.Add(CreateGoal());
                     Console.WriteLine("Goal created!");
                     break;
                 
@@ -108,7 +108,14 @@ public class GoalManager
                     break;
             }
 
-            Console.Clear();
+            if (!done)
+            {
+                // wait for user to press enter before continuing
+                Console.WriteLine("Hit enter to continue...");
+                Console.ReadLine();
+
+                Console.Clear();
+            }
         }
     }
 
