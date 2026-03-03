@@ -14,7 +14,7 @@ public class GoalManager
     {
         _goals = [];
         _score = 0;
-        CheckLevel(0);
+        CheckLevel(1);
         _userName = "";
     }
 
