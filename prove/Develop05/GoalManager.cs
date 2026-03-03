@@ -67,12 +67,12 @@ public class GoalManager
                         {
                             Console.Write($"{i+1}. {_goals[i].GetDetails()}");
                         }
-                        Console.Write("> ");
+                        Console.Write("\n> ");
 
                         int goalChoice = int.Parse(Console.ReadLine());
                         goalChoice --;
 
-                        _goals[goalChoice].RecordEvent();
+                        RecordEvent(_goals[goalChoice]);
                         Console.WriteLine(_goals[goalChoice].GetFullDetails());
                         CheckLevel(_level);
                     }
