@@ -72,6 +72,8 @@ public class GoalManager
                         int goalChoice = int.Parse(Console.ReadLine());
                         goalChoice --;
 
+                        Console.Clear();
+
                         RecordEvent(_goals[goalChoice]);
                         Console.WriteLine(_goals[goalChoice].GetFullDetails());
                         CheckLevel(_level);
