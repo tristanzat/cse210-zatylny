@@ -128,18 +128,22 @@ public class GoalManager
     // handle levels
     private void CheckLevel(int level)
     {
-        // Set level and the score to next level
-        _level = (_score % 1000) + 1;
-        _scoreToLevel = _level * 1000;
+        // Calculate current level based on score
+        // Level progression: 1->2 needs 1000, 2->3 needs 2000, 3->4 needs 3000, etc.
+        // cumulative score s needed for level x (arithmetic series formula): s = x/2 * (0 + (0 + (x-1)1000))
+        // simplify: s = x/2 * (1000x - 1000)
+        // simplify: s = (1000x^2 - 1000x)/2
+        // rearrange: 2s = 1000x^2 - 1000x
+        // rearrange: 2s/1000 = x^2 - x
+        // rearrange: x^2 - x - 2s/1000 = 0
+        // quadratic formula (don't need negative solution): x = (1 + sqrt(1 - (4 * - 1 * 2s/1000))) / 2
+        // simplify: x = (1 + sqrt(1 + 8s/1000))/2
 
-        // Make score to next level take into account current points
-        int subtractScore = _score;
-        for (int i = 0; i < _level; i++)
-        {
-            subtractScore -= i * 1000;
-        }
-
-        _scoreToLevel -= subtractScore;
+        _level = (int)((1 + Math.Sqrt(1 + 8 * _score/1000)) / 2);
+        
+        // Cumulative score needed for next level
+        int scoreForNextLevel = (int)((1000 * Math.Pow(_level, 2) - 1000 * _level) / 2);
+        _scoreToLevel = scoreForNextLevel - _score;
 
         // Display level up message
         if (_level > level)
