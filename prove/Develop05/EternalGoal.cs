@@ -17,7 +17,7 @@ public class EternalGoal : Goal
     // Give points earned so far
     public override int GetPoints()
     {
-        return _points * _timesMarked;
+        return base.GetPoints() * _timesMarked;
     }
 
     // Add to counter

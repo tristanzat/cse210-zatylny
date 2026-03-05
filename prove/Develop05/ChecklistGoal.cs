@@ -24,11 +24,11 @@ public class ChecklistGoal : Goal
     {
         if (IsComplete())
         {
-            return _points * 2;
+            return base.GetPoints() * 2;
         }
         else
         {
-            return _points/_target * _numCompleted;
+            return base.GetPoints() / _target * _numCompleted;
         }
     }
 
