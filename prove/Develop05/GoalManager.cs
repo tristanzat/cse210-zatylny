@@ -71,14 +71,22 @@ public class GoalManager
                         }
                         Console.Write("> ");
 
-                        int goalChoice = int.Parse(Console.ReadLine());
-                        goalChoice --;
+                        // make sure user's choice is available
+                        try
+                        {
+                            int goalChoice = int.Parse(Console.ReadLine());
+                            goalChoice --;
 
-                        Console.Clear();
+                            Console.Clear();
 
-                        RecordEvent(_goals[goalChoice]);
-                        Console.WriteLine(_goals[goalChoice].GetFullDetails());
-                        CheckLevel(_level);
+                            RecordEvent(_goals[goalChoice]);
+                            Console.WriteLine(_goals[goalChoice].GetFullDetails());
+                            CheckLevel(_level);
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Invalid choice. Exiting to menu.");
+                        }
                     }
                     else
                     {
