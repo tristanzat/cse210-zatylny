@@ -3,7 +3,7 @@ public abstract class Goal
     // member variables
     protected readonly string _name;
     protected readonly string _desc;
-    protected readonly int _points;
+    private readonly int _points;
 
     public Goal(string n, string d, int p)
     {

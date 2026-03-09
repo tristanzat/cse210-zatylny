@@ -38,12 +38,12 @@ public class EternalGoal : Goal
     // String format for printing full details
     public override string GetFullDetails()
     {
-        return $"[{_timesMarked}] {_name} ({_desc}) | {_points} pts | {_points * _timesMarked} earned";
+        return $"[{_timesMarked}] {_name} ({_desc}) | {base.GetPoints()} pts | {base.GetPoints() * _timesMarked} pts earned";
     }
 
     // String format for file saving
     public override string ToString()
     {
-        return $"EternalGoal:{_name}|{_desc}|{_points}|{_timesMarked}";
+        return $"EternalGoal:{_name}|{_desc}|{base.GetPoints()}|{_timesMarked}";
     }
 }

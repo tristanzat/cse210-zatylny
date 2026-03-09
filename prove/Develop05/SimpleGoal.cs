@@ -62,15 +62,15 @@ public class SimpleGoal : Goal
     {
         if (IsComplete())
         {
-            return $"[X] {_name} ({_desc}) | {_points} pts";
+            return $"[X] {_name} ({_desc}) | {base.GetPoints()} pts";
         }
-        return $"[ ] {_name} ({_desc}) | {_points} pts";
+        return $"[ ] {_name} ({_desc}) | {base.GetPoints()} pts";
     }
 
 
     // String format for file saving
     public override string ToString()
     {
-        return $"SimpleGoal:{_name}|{_desc}|{_points}|{_complete}";
+        return $"SimpleGoal:{_name}|{_desc}|{base.GetPoints()}|{_complete}";
     }
 }

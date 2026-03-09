@@ -63,14 +63,14 @@ public class ChecklistGoal : Goal
     {
         if (IsComplete())
         {
-            return $"[{_numCompleted}/{_target}] {_name} ({_desc}) | {_points} pts | {_points*2}/{_points*2} earned | bonus {_points} awarded";
+            return $"[{_numCompleted}/{_target}] {_name} ({_desc}) | {base.GetPoints()} pts | {base.GetPoints()*2}/{base.GetPoints()*2} earned | bonus {base.GetPoints()} awarded";
         }
-        return $"[{_numCompleted}/{_target}] {_name} ({_desc}) | {_points} pts | {_points / _target * _numCompleted}/{_points} earned | no bonus earned";
+        return $"[{_numCompleted}/{_target}] {_name} ({_desc}) | {base.GetPoints()} pts | {base.GetPoints() / _target * _numCompleted}/{base.GetPoints()} earned | no bonus earned";
     }
 
     // String format for file saving
     public override string ToString()
     {
-        return $"ChecklistGoal:{_name}|{_desc}|{_points}|{_target}|{_numCompleted}";
+        return $"ChecklistGoal:{_name}|{_desc}|{base.GetPoints()}|{_target}|{_numCompleted}";
     }
 }
