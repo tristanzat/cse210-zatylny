@@ -32,7 +32,7 @@ public class Poison : Status
     }
 
     // Switching out reverts bad poison's tick counter
-    public void SwitchEffect()
+    public override void SwitchEffect(Pokemon target)
     {
         _tickCounter = 1;
     }

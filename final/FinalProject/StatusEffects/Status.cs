@@ -24,6 +24,7 @@ public abstract class Status
     /// <param name="target">The Pokemon to apply the status to</param>
     public virtual void Apply(Pokemon target)
     {
+        Console.WriteLine($"{target.Name} was {_name}!");
         target.Statuses.Add(this);
     }
 
@@ -35,5 +36,19 @@ public abstract class Status
     public virtual void Clear(Pokemon target)
     {
         target.Statuses.Remove(this);
+    }
+
+    public virtual bool IsVolatile()
+    {
+        return _isVolatile;
+    }
+
+    public virtual void SwitchEffect(Pokemon target)
+    {
+        // Volatile status effects clear on switch
+        if(IsVolatile())
+        {
+            Clear(target);
+        }
     }
 }

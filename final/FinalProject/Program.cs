@@ -8,8 +8,8 @@ class Program
         // Charizard's moves: Slash, Flametrower, Fire Fang, Dragon Breath
         List<Move> charizardMoves = [
             new DamageMove("Slash", PokemonType.Normal, 20, 70, 100, 0),
-            new DamageMove("Flamethrower", PokemonType.Fire, 15, 90, 100, 1),
-            new DamageMove("Fire Fang", PokemonType.Fire, 15, 65, 95, 0),
+            new StatusMove("Flamethrower", PokemonType.Fire, 15, 90, 100, 1, [new Burn()]),
+            new StatusMove("Fire Fang", PokemonType.Fire, 15, 65, 95, 0, [new Burn()]),
             new DamageMove("Dragon Breath", PokemonType.Dragon, 20, 60, 100, 1)];
         Pokemon charizard = new("Charizard", 60, PokemonType.Fire, PokemonType.Flying, 78, 84, 78, 109, 85, 100, charizardMoves);
         Trainer user = new([charizard]);

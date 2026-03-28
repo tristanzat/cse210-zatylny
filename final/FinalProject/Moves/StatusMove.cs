@@ -14,9 +14,24 @@ public class StatusMove : DamageMove
     public override void Use(Pokemon user, Pokemon target)
     {
         base.Use(user, target);
-        foreach (Status status in _statuses)
+        if(_didHit)
         {
-            status.Apply(target);
+            foreach (Status status in _statuses)
+            {
+                // If status is non-volatile and a non-volatile status is already applied, don't apply
+                if (!status.IsVolatile())
+                {
+                    // No non-volatile statuses applied
+                    if(!target.Statuses.Any(status => !status.IsVolatile()))
+                    {
+                        status.Apply(target);
+                    }
+                }
+                else
+                {
+                    status.Apply(target);
+                }
+            }
         }
     }
 

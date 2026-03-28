@@ -23,7 +23,7 @@ public class BattleManager
     // methods
     public void StartBattle()
     {
-        Console.WriteLine("Welcome to battle. user vs cpu");
+        Console.WriteLine($"Welcome to battle.\nUser's {_uActive.Name} vs opponent's {_oActive.Name}.");
     }
 
     public void ExecuteTurn()
@@ -39,7 +39,7 @@ public class BattleManager
             "3. Pokemon\t 4. Run\n>");
             input = int.Parse(Console.ReadLine());
             
-            if(input > 0 && input < 4)
+            if(input > 0 && input <= 4)
             {
                 validChoice = true;
             }
@@ -68,6 +68,16 @@ public class BattleManager
                 break;
         }
 
+        TickStatus(_uActive);
+        TickStatus(_oActive);
+    }
+
+    private static void TickStatus(Pokemon active)
+    {
+        foreach (Status status in active.Statuses)
+        {
+            status.Tick(active);
+        }
     }
 
     private void Fight()
@@ -98,7 +108,7 @@ public class BattleManager
             if (uSpd == oSpd)
             {
                 // Randomly break tie
-                if(random.Next(1, 3) == 1) { uSpd +=  1; }
+                if(random.Next(2) == 0) { uSpd +=  1; }
                 else { oSpd += 1; }
             }
             if (uSpd > oSpd)

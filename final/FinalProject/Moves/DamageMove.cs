@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 public class DamageMove : Move
 {
     private int _stage;
+    protected bool _didHit;
     
     public DamageMove(string name, PokemonType type, int pp, int power, int accuracy, int category) : base(name, type, pp, power, accuracy, category)
     {
@@ -62,8 +63,10 @@ public class DamageMove : Move
         Console.WriteLine($"{user.Name} used {_name}!");
         Thread.Sleep(500);
 
+        _didHit = DidHit(user.StageMods[5], target.StageMods[6]);
+
         // Determine whether or not the move hits
-        if(DidHit(user.StageMods[5], target.StageMods[6]))
+        if(_didHit)
         {
             // Messages for effectiveness and crit
             if (effectiveness > 1)

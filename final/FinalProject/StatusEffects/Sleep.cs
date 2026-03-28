@@ -22,7 +22,7 @@ public class Sleep : Status
     }
 
     // Switching out resets duration
-    public void SwitchEffect()
+    public override void SwitchEffect(Pokemon target)
     {
         _duration = _maxDuration;
     }
