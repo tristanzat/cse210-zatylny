@@ -41,14 +41,13 @@ public class StatMove : Move
         Console.WriteLine($"{user.Name} used {_name}!");
         Thread.Sleep(500);
 
-        string useMessage = $"{user.Name}'s ";
-
         for (int i = 0; i < _statsAffected.Count; i++)
         {
             // Get the stat to change
             int stat = _statsAffected[i];
 
             // Message forming
+            string useMessage = $"{user.Name}'s ";
             switch(stat)
             {
                 case 0:
@@ -121,7 +120,6 @@ public class StatMove : Move
                     }
                 }
 
-
                 // Increase or decrease stat by the degree to which it changes
                 user.StageMods[stat] += _degreeChanged[i];
                 
@@ -135,6 +133,9 @@ public class StatMove : Move
                     user.StageMods[stat] = -6;
                 }
             }
+
+            // Display message
+            Console.WriteLine(useMessage);
         }
     }
 
