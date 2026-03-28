@@ -3,6 +3,8 @@ using System.Reflection.Metadata;
 public class BattleManager
 {
     // keep track of those in battle
+    private Trainer _user;
+    private Trainer _opponent;
     private Pokemon _uActive;
     private Pokemon _oActive;
     // keep track of each party
@@ -10,10 +12,12 @@ public class BattleManager
     private List<Pokemon> _oParty;
     private Random random = new();
 
-    public BattleManager(Pokemon user, Pokemon opponent)
+    public BattleManager(Trainer user, Trainer opponent)
     {
-        _uActive = user;
-        _oActive = opponent;
+        _user = user;
+        _opponent = opponent;
+        _uActive = user.Active;
+        _oActive = opponent.Active;
     }
 
     // methods
@@ -24,21 +28,57 @@ public class BattleManager
 
     public void ExecuteTurn()
     {
-        // Choose moves
-        Console.WriteLine($"{_uActive.DisplayStats()}\n{_oActive.DisplayStats()}");
-        Console.Write($"Choose a move:\n{_uActive.DisplayMoves()}> ");
-        int input = int.Parse(Console.ReadLine());
-        Console.Clear();
+        bool validChoice = false;
+        int input = -1;
 
-        input--;
-        Move userMove = _uActive.ChooseMove(input);
+        while (!validChoice)
+        {
+            Console.WriteLine($"{_oActive.DisplayStats()}\n{_uActive.DisplayStats()}");
+            Console.Write("Choose an action:\n" + 
+            "1. Fight\t2. Bag\n" +
+            "3. Pokemon\t 4. Run\n>");
+            input = int.Parse(Console.ReadLine());
+            
+            if(input > 0 && input < 4)
+            {
+                validChoice = true;
+            }
 
-        // Opponent move
-        Move cpuMove = _oActive.ChooseMove(random.Next(4));
+            else
+            {
+                Console.WriteLine("Invalid choice.");
+            }
+
+            Console.Clear();
+        }
+
+        switch(input)
+        {
+            case 1:
+                Fight();
+                break;
+            case 2:
+                Bag();
+                break;
+            case 3:
+                Party();
+                break;
+            case 4:
+                Run();
+                break;
+        }
+
+    }
+
+    private void Fight()
+    {
+        Console.WriteLine($"{_oActive.DisplayStats()}\n{_uActive.DisplayStats()}");
+        Move userMove = _user.Fight();
+        Move cpuMove = _opponent.Fight(random.Next(4));
 
         // Choose who goes first
-        int uPriority = userMove.GetPriority();
-        int oPriority = cpuMove.GetPriority();
+        int uPriority = userMove.Priority;
+        int oPriority = cpuMove.Priority;
 
         // Higher priority goes first
         if (uPriority > oPriority)
@@ -72,17 +112,39 @@ public class BattleManager
         }
     }
 
+    private void Bag()
+    {
+        
+    }
+
+    private void Party()
+    {
+        
+    }
+
+    private void Run()
+    {
+        Console.WriteLine("You can't run from a trainer battle!");
+    }
+
     private void UseMoves(Pokemon user, Pokemon target, Move userMove, Move targetMove)
     {
+        // Use user's move
         userMove.Use(user, target);
         Thread.Sleep(500);
+        // Check if that killed opponent; if not, opponent moves
         if (!target.IsFainted())
         {
             targetMove.Use(target, user);
         }
-        else
+        // Check if either move killed opponent
+        if (target.IsFainted())
         {
-            Console.WriteLine($"{target.GetName()} fainted!");
+            Console.WriteLine($"{target.Name} fainted!");
+        }
+        else if (user.IsFainted())
+        {
+            Console.WriteLine($"{user.Name} fainted!");
         }
         Thread.Sleep(500);
     }

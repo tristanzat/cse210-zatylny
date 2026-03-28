@@ -5,7 +5,7 @@ public abstract class Move
     protected string _name;
     protected PokemonType _type;
     // PP, power, accuracy
-    protected int _curPP;
+    public virtual int CurrentPP { get; protected set; }
     protected int _maxPP;
     protected int _power;
     protected int _accuracy;
@@ -13,7 +13,7 @@ public abstract class Move
     /// Category - 0 = physical, 1 = special, 2 = status
     /// </summary>
     protected int _category;
-    protected int _priority;
+    public virtual int Priority { get; protected set; }
 
     protected static Random random = new();
 
@@ -22,11 +22,11 @@ public abstract class Move
         _name = name;
         _type = type;
         _maxPP = pp;
-        _curPP = pp;
+        CurrentPP = pp;
         _power = power;
         _accuracy = accuracy;  
         _category = category; 
-        _priority = 0;
+        Priority = 0;
     }
 
     public Move(string name, PokemonType type, int pp, int power, int accuracy, int category, int priority)
@@ -34,14 +34,12 @@ public abstract class Move
         _name = name;
         _type = type;
         _maxPP = pp;
-        _curPP = pp;
+        CurrentPP = pp;
         _power = power;
         _accuracy = accuracy;  
         _category = category; 
-        _priority = priority;
+        Priority = priority;
     }
-
-    public virtual int GetPriority() { return _priority; }
 
     public abstract void Use(Pokemon user, Pokemon target);
 
