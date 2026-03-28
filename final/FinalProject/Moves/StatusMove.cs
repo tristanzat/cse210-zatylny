@@ -19,10 +19,10 @@ public class StatusMove : DamageMove
             foreach (Status status in _statuses)
             {
                 // If status is non-volatile and a non-volatile status is already applied, don't apply
-                if (!status.IsVolatile())
+                if (status.IsNonVolatile())
                 {
                     // No non-volatile statuses applied
-                    if(!target.Statuses.Any(status => !status.IsVolatile()))
+                    if(!target.Statuses.Any(status => status.IsNonVolatile()))
                     {
                         status.Apply(target);
                     }

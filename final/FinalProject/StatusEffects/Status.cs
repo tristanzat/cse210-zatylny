@@ -4,12 +4,12 @@ public abstract class Status
     /// <summary>
     /// Non-volatile status effects remain upon switching out. Can have only one non-volatile status effect at a time.
     /// </summary>
-    protected bool _isVolatile;
+    protected bool _isNonVolatile;
 
-    public Status(string name, bool isVolatile)
+    public Status(string name, bool isNonVolatile)
     {
         _name = name;
-        _isVolatile = isVolatile;
+        _isNonVolatile = isNonVolatile;
     }
 
     /// <summary>
@@ -38,15 +38,15 @@ public abstract class Status
         target.Statuses.Remove(this);
     }
 
-    public virtual bool IsVolatile()
+    public virtual bool IsNonVolatile()
     {
-        return _isVolatile;
+        return _isNonVolatile;
     }
 
     public virtual void SwitchEffect(Pokemon target)
     {
         // Volatile status effects clear on switch
-        if(IsVolatile())
+        if(!IsNonVolatile())
         {
             Clear(target);
         }
