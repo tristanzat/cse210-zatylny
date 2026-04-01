@@ -7,7 +7,7 @@ public class Poison : Status
     /// Creates a new instance of the Poison status
     /// </summary>
     /// <param name="badPoison">Whether or not the poison is badly poisoned or not</param>
-    public Poison(bool badPoison) : base("poisoned", true)
+    public Poison(bool badPoison) : base("poisoned", true, 1)
     {
         _badPoison = badPoison;
         _tickCounter = 1;

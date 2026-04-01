@@ -1,7 +1,7 @@
 public class Paralysis : Status
 {
     private bool _didParalyze;
-    public Paralysis() : base("paralyzed", true) {}
+    public Paralysis() : base("paralyzed", true, 0) {}
 
     // Paralysis decreases speed by 50% and has a 25% chance of making a move fail
     public override void Tick(Pokemon target)

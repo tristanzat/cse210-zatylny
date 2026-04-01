@@ -1,29 +1,22 @@
-using System.Reflection.Metadata;
+using System.Formats.Asn1;
 
 public class BattleManager
 {
     // keep track of those in battle
     private Trainer _user;
     private Trainer _opponent;
-    private Pokemon _uActive;
-    private Pokemon _oActive;
-    // keep track of each party
-    private List<Pokemon> _uParty;
-    private List<Pokemon> _oParty;
     private Random random = new();
 
     public BattleManager(Trainer user, Trainer opponent)
     {
         _user = user;
         _opponent = opponent;
-        _uActive = user.Active;
-        _oActive = opponent.Active;
     }
 
     // methods
     public void StartBattle()
     {
-        Console.WriteLine($"Welcome to battle.\nUser's {_uActive.Name} vs opponent's {_oActive.Name}.");
+        Console.WriteLine($"Welcome to battle.\nUser's {_user.Active.Name} vs opponent's {_opponent.Active.Name}.");
     }
 
     public void ExecuteTurn()
@@ -33,9 +26,9 @@ public class BattleManager
 
         while (!validChoice)
         {
-            Console.WriteLine($"{_oActive.DisplayStats()}\n{_uActive.DisplayStats()}");
+            Console.WriteLine($"{_opponent.Active.DisplayStats()}\n{_user.Active.DisplayStats()}");
             Console.Write("Choose an action:\n" + 
-            "1. Fight\t2. Bag\n" +
+            "1. Fight\t2. Stats\n" +
             "3. Pokemon\t 4. Run\n>");
             input = int.Parse(Console.ReadLine());
             
@@ -58,7 +51,7 @@ public class BattleManager
                 Fight();
                 break;
             case 2:
-                Bag();
+                Stats();
                 break;
             case 3:
                 Party();
@@ -68,21 +61,24 @@ public class BattleManager
                 break;
         }
 
-        TickStatus(_uActive);
-        TickStatus(_oActive);
-    }
-
-    private static void TickStatus(Pokemon active)
-    {
-        foreach (Status status in active.Statuses)
+        ResolveStatuses(_user.Active, 1);
+        if (_user.Active.IsFainted())
         {
-            status.Tick(active);
+            Console.WriteLine($"{_user.Active.Name} fainted!");
+        }
+        else
+        {
+            ResolveStatuses(_opponent.Active, 1);
+            if (_opponent.Active.IsFainted())
+            {
+                Console.WriteLine($"{_opponent.Active.Name} fainted!");
+            }
         }
     }
 
     private void Fight()
     {
-        Console.WriteLine($"{_oActive.DisplayStats()}\n{_uActive.DisplayStats()}");
+        Console.WriteLine($"{_opponent.Active.DisplayStats()}\n{_user.Active.DisplayStats()}");
         Move userMove = _user.Fight();
         Move cpuMove = _opponent.Fight(random.Next(4));
 
@@ -93,18 +89,18 @@ public class BattleManager
         // Higher priority goes first
         if (uPriority > oPriority)
         {
-            UseMoves(_uActive, _oActive, userMove, cpuMove);
+            UseMoves(_user.Active, _opponent.Active, userMove, cpuMove);
         }
         else if (oPriority > uPriority)
         {
-            UseMoves(_oActive, _uActive, cpuMove, userMove);
+            UseMoves(_opponent.Active, _user.Active, cpuMove, userMove);
         }
         // Same priority - speed based
         // Same speed - random
         else
         {
-            int uSpd = _uActive.GetSpeed();
-            int oSpd = _oActive.GetSpeed();
+            int uSpd = _user.Active.GetSpeed();
+            int oSpd = _opponent.Active.GetSpeed();
             if (uSpd == oSpd)
             {
                 // Randomly break tie
@@ -113,16 +109,16 @@ public class BattleManager
             }
             if (uSpd > oSpd)
             {
-                UseMoves(_uActive, _oActive, userMove, cpuMove);
+                UseMoves(_user.Active, _opponent.Active, userMove, cpuMove);
             }
             else
             {
-                UseMoves(_oActive, _uActive, cpuMove, userMove);
+                UseMoves(_opponent.Active, _user.Active, cpuMove, userMove);
             }
         }
     }
 
-    private void Bag()
+    private void Stats()
     {
         
     }
@@ -139,11 +135,22 @@ public class BattleManager
 
     private void UseMoves(Pokemon user, Pokemon target, Move userMove, Move targetMove)
     {
-        // Use user's move
-        userMove.Use(user, target);
+        bool useMove = true;
+        // User can't use move if frozen, asleep, or paralyzed
+        useMove = ResolveStatuses(user, 0);
+        if (useMove)
+        {
+            userMove.Use(user, target);
+        }
         Thread.Sleep(500);
-        // Check if that killed opponent; if not, opponent moves
-        if (!target.IsFainted())
+        useMove = true;
+        // Check if that killed opponent; if so, opponent can't move
+        if (target.IsFainted())
+        {
+            useMove = false;
+        }
+        useMove = ResolveStatuses(target, 0);
+        if (useMove)
         {
             targetMove.Use(target, user);
         }
@@ -161,6 +168,50 @@ public class BattleManager
 
     public bool IsOver()
     {
-        return _uActive.IsFainted() || _oActive.IsFainted();
+        return _user.Active.IsFainted() || _opponent.Active.IsFainted();
+    }
+
+    // Handles status ticking either during move or after moves
+    public static bool ResolveStatuses(Pokemon target, int tickOrder)
+    {
+        // Tick order 0 - during move
+        if (tickOrder == 0)
+        {
+            bool useMove = true;
+            foreach (Status status in target.Statuses.ToList())
+            {
+                if (status.TickOrder == tickOrder)
+                {
+                    bool isFrozen = status is Freeze;
+                    bool isParalyzedThisTurn = status is Paralysis paralysis && paralysis.DidParalyze();
+                    bool isSleeping = status is Sleep;
+
+                    if (isFrozen || isParalyzedThisTurn || isSleeping)
+                    {
+                        // Tick status, don't use move
+                        status.Tick(target);
+                        useMove = false;
+                        // If sleep ran out, use move
+                        if (status is Sleep sleep && sleep.IsAwake())
+                        {
+                            useMove = true;
+                        }
+                    }
+                }
+            }
+            return useMove;
+        }
+        // Tick order 1 - after moves
+        else
+        {
+            foreach (Status status in target.Statuses.ToList())
+            {
+                if (status.TickOrder == tickOrder)
+                {
+                    status.Tick(target);
+                }
+            }
+            return true;
+        }
     }
 }

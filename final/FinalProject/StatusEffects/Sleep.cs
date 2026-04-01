@@ -2,7 +2,7 @@ public class Sleep : Status
 {
     private int _duration;
     private int _maxDuration;
-    public Sleep() : base("asleep", true)
+    public Sleep() : base("asleep", true, 0)
     {
         Random random = new();
         _maxDuration = random.Next(2,5);
@@ -25,5 +25,10 @@ public class Sleep : Status
     public override void SwitchEffect(Pokemon target)
     {
         _duration = _maxDuration;
+    }
+
+    public bool IsAwake()
+    {
+        return _duration <= 0;
     }
 }

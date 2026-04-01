@@ -1,6 +1,6 @@
 public class Burn : Status
 {
-    public Burn() : base("burned", true) {}
+    public Burn() : base("burned", true, 1) {}
 
     // Burn deals 1/16 of the pokemon's max hp as damage
     public override void Tick(Pokemon target)

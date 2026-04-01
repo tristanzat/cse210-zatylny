@@ -5,11 +5,16 @@ public abstract class Status
     /// Non-volatile status effects remain upon switching out. Can have only one non-volatile status effect at a time.
     /// </summary>
     protected bool _isNonVolatile;
+    /// <summary>
+    /// Defines when the status effect goes off. 0 = before move use, 1 = after all turns
+    /// </summary>
+    public int TickOrder { get; private set; }
 
-    public Status(string name, bool isNonVolatile)
+    public Status(string name, bool isNonVolatile, int tickOrder)
     {
         _name = name;
         _isNonVolatile = isNonVolatile;
+        TickOrder = tickOrder;
     }
 
     /// <summary>
