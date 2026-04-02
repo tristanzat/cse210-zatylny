@@ -5,6 +5,15 @@ public class DamageMove : Move
     private int _stage;
     protected bool _didHit;
     
+    /// <summary>
+    /// Creates a new instance of a DamageMove
+    /// </summary>
+    /// <param name="name">Move name</param>
+    /// <param name="type">Move type</param>
+    /// <param name="pp">Move max PP</param>
+    /// <param name="power">Move power</param>
+    /// <param name="accuracy">Move accuracy</param>
+    /// <param name="category">Move category; 0 = physical, 1 = special, 2 = status</param>
     public DamageMove(string name, PokemonType type, int pp, int power, int accuracy, int category) : base(name, type, pp, power, accuracy, category)
     {
         _stage = 0;
@@ -14,6 +23,16 @@ public class DamageMove : Move
         }
     }
 
+    /// <summary>
+    /// Creates a new instance of a DamageMove with priority
+    /// </summary>
+    /// <param name="name">Move name</param>
+    /// <param name="type">Move type</param>
+    /// <param name="pp">Move max PP</param>
+    /// <param name="power">Move power</param>
+    /// <param name="accuracy">Move accuracy</param>
+    /// <param name="category">Move category; 0 = physical, 1 = special, 2 = status</param>
+    /// <param name="priority">Move priority</param>
     public DamageMove(string name, PokemonType type, int pp, int power, int accuracy, int category, int priority) : base(name, type, pp, power, accuracy, category, priority)
     {
         _stage = 0;

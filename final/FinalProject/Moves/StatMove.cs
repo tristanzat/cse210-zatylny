@@ -28,12 +28,12 @@ public class StatMove : Move
     /// <param name="category">Move category; 0 = physical, 1 = special, 2 = status</param>
     /// <param name="statsAffected">A list of which stats are affected<br/>0 - atk, 1 - def, 2 - spAtk, 3 - spDef, 4 - speed, 5 - accuracy, 6 - evasiveness</param>
     /// <param name="degreeChanged">A list containing the degrees to which previous listed stats should change, ranging from -6 to 6</param>
-    /// <param name="target">A list containing which Pokemon the stat change affects; true = user, false = opponent</param>
-    public StatMove(string name, PokemonType type, int pp, int power, int accuracy, int category, List<int> statsAffected, List<int> degreeChanged, List<bool> target) : base(name, type, pp, power, accuracy, category)
+    /// <param name="targetsSelf">A list containing which Pokemon the stat change affects; true = user, false = opponent</param>
+    public StatMove(string name, PokemonType type, int pp, int power, int accuracy, int category, List<int> statsAffected, List<int> degreeChanged, List<bool> targetsSelf) : base(name, type, pp, power, accuracy, category)
     {
         _statsAffected = statsAffected;
         _degreeChanged = degreeChanged;
-        _target = target;
+        _target = targetsSelf;
     }
 
     public override void Use(Pokemon user, Pokemon target)

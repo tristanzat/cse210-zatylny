@@ -1,19 +1,20 @@
-using System.Formats.Asn1;
-
 public class BattleManager
 {
     // keep track of those in battle
     private Trainer _user;
     private Trainer _opponent;
+
+    // keep track of which Pokemon opponent has out for switching after a faint
+    private int _cpuOut;
     private Random random = new();
 
     public BattleManager(Trainer user, Trainer opponent)
     {
         _user = user;
         _opponent = opponent;
+        _cpuOut = 0;
     }
 
-    // methods
     public void StartBattle()
     {
         Console.WriteLine($"Welcome to battle.\nUser's {_user.Active.Name} vs opponent's {_opponent.Active.Name}.");
@@ -21,6 +22,19 @@ public class BattleManager
 
     public void ExecuteTurn()
     {
+        // if a Pokemon fainted, prompt a switch for the next one
+        while (_user.Active.IsFainted())
+        {
+            Party();
+        }
+        if (_opponent.Active.IsFainted())
+        {
+            _cpuOut ++;
+            if (_cpuOut < 6)
+            {
+                _opponent.Switch(_cpuOut);
+            }
+        }
         bool validChoice = false;
         int input = -1;
 
@@ -28,8 +42,8 @@ public class BattleManager
         {
             Console.WriteLine($"{_opponent.Active.DisplayStats()}\n{_user.Active.DisplayStats()}");
             Console.Write("Choose an action:\n" + 
-            "1. Fight\t2. Stats\n" +
-            "3. Pokemon\t 4. Run\n>");
+            "1. Fight\t2. Bag\n" +
+            "3. Pokemon\t 4. Run\n> ");
             input = int.Parse(Console.ReadLine());
             
             if(input > 0 && input <= 4)
@@ -51,7 +65,7 @@ public class BattleManager
                 Fight();
                 break;
             case 2:
-                Stats();
+                Bag();
                 break;
             case 3:
                 Party();
@@ -61,6 +75,7 @@ public class BattleManager
                 break;
         }
 
+        // Tick post-turn status effects
         ResolveStatuses(_user.Active, 1);
         if (_user.Active.IsFainted())
         {
@@ -118,38 +133,70 @@ public class BattleManager
         }
     }
 
-    private void Stats()
+    private void Bag()
     {
         
     }
 
     private void Party()
     {
-        
+        // Get user's switch-in choice
+        Console.WriteLine("Choose a Pokemon to switch in:");
+        bool validChoice = false;
+        int choice = 0;
+
+        while (!validChoice)
+        {
+            _user.Party();
+            Console.Write("7. Cancel\n> ");
+            choice = int.Parse(Console.ReadLine());
+            choice--;
+
+            // Handle choosing active pokemon or fainted pokemon
+            if (choice == 0)
+            {
+                Console.WriteLine("This Pokemon is already active.");
+            }
+            else if (_user.Team[choice].IsFainted())
+            {
+                Console.WriteLine("This Pokemon is fainted.");
+            }
+            else
+            {
+                validChoice = true;
+            }
+        }
+
+        _user.Switch(choice);
+
     }
 
-    private void Run()
+    private static void Run()
     {
         Console.WriteLine("You can't run from a trainer battle!");
     }
 
-    private void UseMoves(Pokemon user, Pokemon target, Move userMove, Move targetMove)
+    private static void UseMoves(Pokemon user, Pokemon target, Move userMove, Move targetMove)
     {
-        bool useMove = true;
         // User can't use move if frozen, asleep, or paralyzed
-        useMove = ResolveStatuses(user, 0);
+        bool useMove = ResolveStatuses(user, 0);
         if (useMove)
         {
             userMove.Use(user, target);
         }
         Thread.Sleep(500);
-        useMove = true;
+
         // Check if that killed opponent; if so, opponent can't move
         if (target.IsFainted())
         {
             useMove = false;
         }
-        useMove = ResolveStatuses(target, 0);
+        // Handle any statuses that would prevent a move
+        else
+        {
+            useMove = ResolveStatuses(target, 0);
+        }
+
         if (useMove)
         {
             targetMove.Use(target, user);
@@ -168,7 +215,7 @@ public class BattleManager
 
     public bool IsOver()
     {
-        return _user.Active.IsFainted() || _opponent.Active.IsFainted();
+        return _user.Defeated() || _opponent.Defeated();
     }
 
     // Handles status ticking either during move or after moves

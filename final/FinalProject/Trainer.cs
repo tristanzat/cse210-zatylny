@@ -1,19 +1,25 @@
 public class Trainer
 {
     // Personal team
-    private List<Pokemon> _team;
+    public List<Pokemon> Team { get; private set; }
     // Active pokemon
     public Pokemon Active { get; private set; }
+    // Number of fainted pokemon
+    private int _numFainted;
+    // User's bag
+    public List<int> Bag { get; private set; }
 
     public Trainer(List<Pokemon> pokemon)
     {
-        _team = pokemon;
-        Active = _team[0];
+        Team = pokemon;
+        Active = Team[0];
+        _numFainted = 0;
+        Bag = [0, 0, 0, 1];
     }
 
     public void Switch(int teamSpot)
     {
-        Active = _team[teamSpot];
+        Active = Team[teamSpot];
     }
 
     /// <summary>
@@ -73,18 +79,44 @@ public class Trainer
         return Active.ChooseMove(choice);
     }
 
-    public void Bag()
-    {
-        
-    }
-
     public void Party()
     {
-        
+        int choiceNum = 1;
+        foreach (Pokemon pokemon in Team)
+        {
+            Console.Write($"{choiceNum}. {pokemon.Name} ");
+            foreach(Status status in pokemon.Statuses)
+            {
+                Console.Write($"({status.GetInfo()})");
+            }
+            if(pokemon == Active)
+            {
+                Console.Write("(active)");
+            }
+            if(pokemon.IsFainted())
+            {
+                Console.Write("(fainted)");
+            }
+            Console.WriteLine();
+            choiceNum ++;
+        }
     }
 
-    public void Run()
+    private void CheckFainted()
     {
-        
+        _numFainted = 0;
+        foreach (Pokemon pokemon in Team)
+        {
+            if (pokemon.IsFainted())
+            {
+                _numFainted ++;
+            }
+        }
+    }
+
+    public bool Defeated()
+    {
+        CheckFainted();
+        return _numFainted >= Team.Count;
     }
 }
