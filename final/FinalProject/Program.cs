@@ -52,7 +52,7 @@ class Program
             [
                 // Gen IX learnset picks (mostly damage)
                 new DamageMove("Extreme Speed", PokemonType.Normal, 5, 80, 100, 0, 2),
-                new DamageMove("Bullet Punch", PokemonType.Steel, 30, 40, 100, 0, 1),
+                new DamageMove("Close Combat", PokemonType.Fighting, 5, 120, 100, 0),
                 new DamageMove("Dragon Pulse", PokemonType.Dragon, 10, 85, 100, 1),
                 new DamageMove("Earthquake", PokemonType.Ground, 10, 100, 100, 0)
             ],

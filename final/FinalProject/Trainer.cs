@@ -29,6 +29,7 @@ public class Trainer
     public Move Fight()
     {
         bool validChoice = false;
+        bool fight = true;
         int input = -1;
 
         while (!validChoice)

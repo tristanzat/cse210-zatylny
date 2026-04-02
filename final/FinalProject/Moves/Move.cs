@@ -5,7 +5,7 @@ public abstract class Move
     protected string _name;
     protected PokemonType _type;
     // PP, power, accuracy
-    public virtual int CurrentPP { get; protected set; }
+    public virtual int CurrentPP { get; set; }
     protected int _maxPP;
     protected int _power;
     protected int _accuracy;

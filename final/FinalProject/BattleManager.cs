@@ -95,7 +95,9 @@ public class BattleManager
     {
         Console.WriteLine($"{_opponent.Active.DisplayStats()}\n{_user.Active.DisplayStats()}");
         Move userMove = _user.Fight();
+        userMove.CurrentPP--;
         Move cpuMove = _opponent.Fight(random.Next(4));
+        cpuMove.CurrentPP--;
 
         // Choose who goes first
         int uPriority = userMove.Priority;
@@ -143,6 +145,7 @@ public class BattleManager
         // Get user's switch-in choice
         Console.WriteLine("Choose a Pokemon to switch in:");
         bool validChoice = false;
+        bool swap = true;
         int choice = 0;
 
         while (!validChoice)
@@ -153,7 +156,11 @@ public class BattleManager
             choice--;
 
             // Handle choosing active pokemon or fainted pokemon
-            if (choice == 0)
+            if (choice == 7)
+            {
+                swap = false;
+            }
+            else if (choice == 0)
             {
                 Console.WriteLine("This Pokemon is already active.");
             }
@@ -167,8 +174,10 @@ public class BattleManager
             }
         }
 
-        _user.Switch(choice);
-
+        if (swap)
+        {
+            _user.Switch(choice);
+        }
     }
 
     private static void Run()
