@@ -156,11 +156,11 @@ public class BattleManager
             choice--;
 
             // Handle choosing active pokemon or fainted pokemon
-            if (choice == 7)
+            if (choice >= 6)
             {
                 swap = false;
             }
-            else if (choice == 0)
+            else if (_user.Team[choice] == _user.Active)
             {
                 Console.WriteLine("This Pokemon is already active.");
             }
